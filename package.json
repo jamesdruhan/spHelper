@@ -1,0 +1,21 @@
+{
+  "name": "sphelper",
+  "version": "0.2.0",
+  "description": "A JavaScript library that makes JSOM requests to SharePoint simpler and less repetitive.",
+  "scripts": {
+    "babel": "babel src -d build"
+  },
+  "main": "src/spHelper.js",
+  "author": "James Druhan <jdruhan.home@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [
+    "sharepoint",
+    "jsom",
+    "javascript"
+  ],
+  "files": [
+    "src/spHelper.js"
+  ]
+}
