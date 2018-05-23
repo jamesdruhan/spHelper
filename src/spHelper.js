@@ -1468,14 +1468,145 @@ export default class spHelper
     }
 
     /**
-     * Gets the number (constant) equivalent to the text based SP.FieldType.
+     * Gets the number (constant) equivalent to the text based SP.FieldType if the passed variable is a STRING.
+     * Gets the text (string) equivalent of the SP.FieldType if the passed variable is a NUMBER.
      *
      * PARAMETERS
-     *      type - [STRING] : A string representing a SP.FieldType.
+     *      type - [STRING/NUMBER] : A string representing a SP.FieldType or a number (SP.FieldType).
      */
     fieldType (type)
     {
-        return (SP.FieldType[type])
+		if (type.constructor.name === 'String')
+		{
+			return (SP.FieldType[type])
+		}
+        else
+		{
+            if (type === 1)
+            {
+                return 'integer';
+            }
+            else if (type === 2)
+            {
+                return 'text'
+            }
+            else if (type === 3)
+            {
+                return 'note'
+            }
+            else if (type === 4)
+            {
+                return 'dateTime'
+            }
+            else if (type === 5)
+            {
+                return 'counter'
+            }
+            else if (type === 6)
+            {
+                return 'choice'
+            }
+            else if (type === 7)
+            {
+                return 'lookup'
+            }
+            else if (type === 8)
+            {
+                return 'boolean'
+            }
+            else if (type === 9)
+            {
+                return 'number'
+            }
+            else if (type === 10)
+            {
+                return 'currency'
+            }
+            else if (type === 11)
+            {
+                return 'URL'
+            }
+            else if (type === 12)
+            {
+                return 'computed'
+            }
+            else if (type === 13)
+            {
+                return 'threading'
+            }
+            else if (type === 14)
+            {
+                return 'guid'
+            }
+            else if (type === 15)
+            {
+                return 'multiChoice'
+            }
+            else if (type === 16)
+            {
+                return 'gridChoice'
+            }
+            else if (type === 17)
+            {
+                return 'calculated'
+            }
+            else if (type === 18)
+            {
+                return 'file'
+            }
+            else if (type === 19)
+            {
+                return 'attachments'
+            }
+            else if (type === 20)
+            {
+                return 'user'
+            }
+            else if (type === 21)
+            {
+                return 'recurrence'
+            }
+            else if (type === 22)
+            {
+                return 'crossProjectLink'
+            }
+            else if (type === 23)
+            {
+                return 'modStat'
+            }
+            else if (type === 24)
+            {
+                return 'error'
+            }
+            else if (type === 25)
+            {
+                return 'contentTypeId'
+            }
+            else if (type === 26)
+            {
+                return 'pageSeparator'
+            }
+            else if (type === 27)
+            {
+                return 'threadIndex'
+            }
+            else if (type === 28)
+            {
+                return 'workflowStatus'
+            }
+            else if (type === 29)
+            {
+                return 'allDayEvent'
+            }
+            else if (type === 30)
+            {
+                return 'workflowEventType'
+            }
+            else if (type === 31)
+            {
+                return 'maxItems'
+            }
+		}
     }
 
     /**
