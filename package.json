@@ -3,7 +3,7 @@
   "version": "0.2.2",
   "description": "A JavaScript library that makes JSOM requests to SharePoint simpler and less repetitive.",
   "scripts": {
-    "babel": "babel src -d build"
+    "babel": "babel src -d build --presets minify"
   },
   "main": "build/spHelper.js",
   "author": "James Druhan <jdruhan.home@gmail.com>",
@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-minify": "^0.4.3"
   },
   "keywords": [
     "sharepoint",

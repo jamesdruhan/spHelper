@@ -526,7 +526,6 @@ export default class spHelper
             // Callback function when the request (promise) has rejected.
             let reject = function (sender, args)
             {
-                console.log('Here5');
                 onFailure( args.get_message() );
             };
 
@@ -963,11 +962,11 @@ export default class spHelper
 	 *
 	 * PARAMETERS
 	 *      libraryName    - [STRING]                       : The name of the library.
-	 *      readOnlyFields - [BOOL]                         : Inidicates if only the read only fields of a list should be returned.
 	 *      onSuccessUser  - [FUNC ([STRING] result)]       : A callback function that is executed when the property is successfully received.
 	 *      onFailureUser  - [FUNC ([STRING] errorMessage)] : A callback function that is executed when the property cannot be received.
+	 *      readOnlyFields - [BOOL]                         : Inidicates if only the read only fields of a list should be returned.
 	 */
-    getListDetails (libraryName, readOnlyFields = true, onSuccessUser, onFailureUser)
+    getListDetails (libraryName, onSuccessUser, onFailureUser, readOnlyFields = true)
     {
         try
         {
