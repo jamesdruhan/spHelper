@@ -584,103 +584,122 @@ export default class spHelper
      *              }
      *          };
      */
-    updateListItem(updateDetails, onSuccessUser, onFailureUser)
-    {
-        if (typeof updateDetails.listName == 'undefined' || typeof updateDetails.itemID == 'undefined' || typeof updateDetails.columnData == 'undefined')
-        {
-            throw 'spHelper Error: Invalid update details. To update an item, the list name, item ID, and column update data is required.';
-        }
+	updateListItem(updateDetails, onSuccessUser, onFailureUser)
+	{
+		if (typeof updateDetails.listName == 'undefined' || typeof updateDetails.itemID == 'undefined' || typeof updateDetails.columnData == 'undefined')
+		{
+			throw 'spHelper Error: Invalid update details. To update an item, the list name, item ID, and column update data is required.';
+		}
 
-        try
-        {
-            // Will store the spList object when request is complete.
-            let spList = this.spWeb.get_lists().getByTitle(updateDetails.listName);
+		try
+		{
+			// Will store the spList object when request is complete.
+			let spList = this.spWeb.get_lists().getByTitle(updateDetails.listName);
 
-            // Will store the spItem object when the request is complete.
-            let spItem = spList.getItemById(updateDetails.itemID);
+			// Will store the spItem object when the request is complete.
+			let spItem = spList.getItemById(updateDetails.itemID);
 
-            for (let key in updateDetails.columnData)
-            {
-                // Update process for URL fields.
-                if (updateDetails.columnData[key].Type.toLowerCase() == 'url')
-                {
-                    try
-                    {
-                        let spURLField = new SP.FieldUrlValue();
+			for (let key in updateDetails.columnData)
+			{
+				// Update process for URL fields.
+				if (updateDetails.columnData[key].Type.toLowerCase() == 'url')
+				{
+					try
+					{
+						let spURLField = new SP.FieldUrlValue();
 
-                        spURLField.set_url(updateDetails.columnData[key].URL);
-                        spURLField.set_description(updateDetails.columnData[key].Description);
+						spURLField.set_url(updateDetails.columnData[key].URL);
+						spURLField.set_description(updateDetails.columnData[key].Description);
 
-                        spItem.set_item(key, spURLField);
-                    }
-                    catch (error)
-                    {
-                        throw 'spHelper Error: Invalid URL field details. Unable to update item ... ' + error;
-                    }
-                }
-                // Update process for Lookup fields.
-                else if (updateDetails.columnData[key].Type.toLowerCase() == 'lookup')
-                {
-                    try
-                    {
+						spItem.set_item(key, spURLField);
+					}
+					catch (error)
+					{
+						throw 'spHelper Error: Invalid URL field details. Unable to update item ... ' + error;
+					}
+				}
+				// Update process for Lookup fields.
+				else if (updateDetails.columnData[key].Type.toLowerCase() == 'lookup')
+				{
+					try
+					{
 						if (updateDetails.columnData[key].LookupID !== '')
 						{
-							let spLookupField = new SP.FieldLookupValue();
+							// If array --> MultiChoice Lookup.
+							if (updateDetails.columnData[key].LookupID.constructor.name === 'Array')
+							{
+								let lookupIDFields = [];
 
-							spLookupField.set_lookupId(updateDetails.columnData[key].LookupID);
+								updateDetails.columnData[key].LookupID.forEach( function (item)
+								{
+									let spLookupField = new SP.FieldLookupValue();
 
-							spItem.set_item(key, spLookupField);
+									spLookupField.set_lookupId(item);
+
+									lookupIDFields.push(spLookupField);
+								});
+
+								spItem.set_item(key, lookupIDFields);
+							}
+							else
+							{
+								let spLookupField = new SP.FieldLookupValue();
+
+								spLookupField.set_lookupId(updateDetails.columnData[key].LookupID);
+
+								spItem.set_item(key, spLookupField);
+							}
 						}
 						else
 						{
 							spItem.set_item(key, null);
 						}
-                    }
-                    catch (error)
-                    {
-                        throw 'spHelper Error: Invalid Lookup field details. Unable to update item ... ' + error;
-                    }
-                }
-                else if (updateDetails.columnData[key].Type.toLowerCase() === 'user')
-                {
-                    let userList = [];
+					}
+					catch (error)
+					{
+						throw 'spHelper Error: Invalid Lookup field details. Unable to update item ... ' + error;
+					}
+				}
+				else if (updateDetails.columnData[key].Type.toLowerCase() === 'user')
+				{
+					let userList = [];
 
-                    if (updateDetails.columnData[key].Value.constructor.name === 'String')
-                    {
-                        let user = new SP.FieldUserValue.fromUser(updateDetails.columnData[key].Value);
+					if (updateDetails.columnData[key].Value.constructor.name === 'String')
+					{
+						let user = new SP.FieldUserValue.fromUser(updateDetails.columnData[key].Value);
 
-                        userList.push(user);
-                    }
-                    else
-                    {
-                        updateDetails.columnData[key].Value.forEach( function (itemUser)
-                        {
-                            let user = new SP.FieldUserValue.fromUser(itemUser);
+						userList.push(user);
+						}
+					else
+					{
+						updateDetails.columnData[key].Value.forEach( function (itemUser)
+					{
+						let user = new SP.FieldUserValue.fromUser(itemUser);
 
-                            userList.push(user);
-                        });
-                    }
+						userList.push(user);
+					});
+					}
 
-                    spItem.set_item(key, userList);
-                }
-                // Update process for normal SharePoint fields (like text, choice, integer).
-                else
-                {
-                    spItem.set_item(key, updateDetails.columnData[key].Value);
-                }
-            }
+					spItem.set_item(key, userList);
+				}
+				// Update process for normal SharePoint fields (like text, choice, integer).
+				else
+				{
+					spItem.set_item(key, updateDetails.columnData[key].Value);
+				}
+			}
 
-            // Apply the changes to the row.
-            spItem.update();
+			// Apply the changes to the row.
+			spItem.update();
 
-            // Update the item.
-            this.appContext.executeQueryAsync( onSuccessUser, onFailureUser );
-        }
-        catch (error)
-        {
-            throw 'spHelper Error: Unable to update item. Validate update details ... ' + error;
-        }
-    }
+			// Update the item.
+			this.appContext.executeQueryAsync( onSuccessUser, onFailureUser );
+		}
+		catch (error)
+		{
+			throw 'spHelper Error: Unable to update item. Validate update details ... ' + error;
+		}
+	}
 
     /**
      * Adds a new item to a SharePoint list library. The itemDetails property must contain the list name as well as the column data details.
@@ -955,7 +974,7 @@ export default class spHelper
         }
 	}
 
-    /**
+	/**
 	 * Gets a full breakdown of a list library including column details and settings. The 'readOnlyFields' option allows the user
 	 * to control the quantity of columns returned. Setting this option to 'true' means only fields that can be modified in a form
 	 * are turned. Setting to 'false' will ensure any and every field is returned (such as 'Created', 'Author', etc.).
@@ -1460,7 +1479,7 @@ export default class spHelper
 
         let onFailureCurrent = function (error)
         {
-            console.log(error);
+            onFailureUser(error);
         }
 
         this.getCurrentUser(onSuccessCurrent, onFailureCurrent);
@@ -1654,6 +1673,477 @@ export default class spHelper
         else if (type.toLowerCase() === 'fivedecimals')
         {
             return 5;
+        }
+    }
+
+    /**
+	 * Verifies if user has read access to the specified list.
+	 *
+	 * PARAMETERS
+	 *      libraryName - [STRING] : A string representing the list name.
+	 */
+    canReadList (libraryName, onHasAccess, onNoAccess)
+    {
+        if (typeof libraryName == 'undefined')
+        {
+            throw 'spHelper Error: Invalid can read list details. To check access a libraryName must be defined.';
+        }
+
+        try
+        {
+            // Will store the spList object when request is complete.
+            let spList = this.spWeb.get_lists().getByTitle(libraryName);
+
+            // Load the SPList object.
+            this.appContext.load(spList);
+
+            // Function that runs on success (has access).
+            let resolve = function ()
+            {
+                onHasAccess();
+            };
+
+            // Function to run when no access.
+            let reject = function (sender, args)
+            {
+                onNoAccess();
+            };
+
+            this.appContext.executeQueryAsync( resolve, reject );
+        }
+        catch (error)
+        {
+            throw 'spHelper Error: Unable to validate user permissions for list ... ' + error;
+        }
+    }
+
+    /**
+	 * Verifies if user has write/edit access to the specified list.
+	 *
+	 * PARAMETERS
+	 *      libraryName - [STRING] : A string representing the list name.
+	 */
+    canWriteList (libraryName, onHasAccess, onNoAccess)
+    {
+        if (typeof libraryName == 'undefined')
+        {
+            throw 'spHelper Error: Invalid can write list details. To check access a libraryName must be defined.';
+        }
+
+        try
+        {
+            // Will store the spList object when request is complete.
+            let spList = this.spWeb.get_lists().getByTitle(libraryName);
+
+            // Load the SPList object with its EffectiveBasePermissions property.
+            this.appContext.load(spList, 'EffectiveBasePermissions');
+
+            // Function that runs on success (has access).
+            let resolve = function ()
+            {
+                if (spList.get_effectiveBasePermissions().has(SP.PermissionKind.editListItems))
+                {
+                    onHasAccess();
+                }
+                else
+                {
+                    onNoAccess();
+                }
+            };
+
+            // Function to run when no access.
+            let reject = function (sender, args)
+            {
+                onNoAccess();
+            };
+
+            this.appContext.executeQueryAsync( resolve, reject );
+        }
+        catch (error)
+        {
+            throw 'spHelper Error: Unable to validate user permissions for list ... ' + error;
+        }
+    }
+
+    /**
+	 * Verifies if user has delete access to the specified list.
+	 *
+	 * PARAMETERS
+	 *      libraryName - [STRING] : A string representing the list name.
+	 */
+    canDeleteList (libraryName, onHasAccess, onNoAccess)
+    {
+        if (typeof libraryName == 'undefined')
+        {
+            throw 'spHelper Error: Invalid can delete list details. To check access a libraryName must be defined.';
+        }
+
+        try
+        {
+            // Will store the spList object when request is complete.
+            let spList = this.spWeb.get_lists().getByTitle(libraryName);
+
+            // Load the SPList object with its EffectiveBasePermissions property.
+            this.appContext.load(spList, 'EffectiveBasePermissions');
+
+            // Function that runs on success (has access).
+            let resolve = function ()
+            {
+                if (spList.get_effectiveBasePermissions().has(SP.PermissionKind.deleteListItems))
+                {
+                    onHasAccess();
+                }
+                else
+                {
+                    onNoAccess();
+                }
+            };
+
+            // Function to run when no access.
+            let reject = function (sender, args)
+            {
+                onNoAccess();
+            };
+
+            this.appContext.executeQueryAsync( resolve, reject );
+        }
+        catch (error)
+        {
+            throw 'spHelper Error: Unable to validate user permissions for list ... ' + error;
+        }
+    }
+
+	/**
+	 * Verifies if the user executing the command has specific access to a specific list.
+	 *
+	 * PARAMETERS
+	 *      libraryName - [STRING] : A string representing the list name.
+	 *      permissionType - [STRING] : A string representing the SPBasePermission (https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ee556747(v%3Doffice.14))
+	 */
+	hasListAccess (libraryName, permissionType, onHasAccess, onNoAccess)
+	{
+        if (typeof libraryName == 'undefined' || typeof permissionType == 'undefined')
+        {
+            throw 'spHelper Error: Invalid has list access details. To check access, libraryName and permissionType must be defined.';
+        }
+
+        try
+        {
+            // Will store the spList object when request is complete.
+            let spList = this.spWeb.get_lists().getByTitle(libraryName);
+
+            // Load the SPList object with its EffectiveBasePermissions property.
+            this.appContext.load(spList, 'EffectiveBasePermissions');
+
+            // Callback function when the request (promise) is resolved.
+            let resolve = function ()
+            {
+                if (spList.get_effectiveBasePermissions().has(SP.PermissionKind[permissionType]))
+                {
+                    onHasAccess();
+                }
+                else
+                {
+                    onNoAccess()
+                }
+            };
+
+            // Callback function when the request (promise) has rejected.
+            let reject = function (sender, args)
+            {
+                onNoAccess()
+            };
+
+            this.appContext.executeQueryAsync( resolve, reject );
+        }
+        catch (error)
+        {
+            throw 'spHelper Error: Unable to validate user permissions ... ' + error;
+        }
+	}
+
+    /**
+	 * A collection of SharePoint ribbon utilities.
+	 *
+	 * UTILITIES [OBJECTS]
+	 *      removeEdit - [FUNCTION] : Selects the browse tab and removes the edit tab.
+	 */
+    spRibbon ()
+    {
+        return {
+            // Remove the EDIT tab in the SharePoint ribbon. Makes 3 attempts due to ribbon loading timing.
+            removeEdit : function ()
+            {
+                let removeEditPromise = new Promise ( ( resolve, reject ) =>
+                {
+                    ExecuteOrDelayUntilScriptLoaded( function ()
+                    {
+                        let attempts    = 3;
+                        let editRemoved = false;
+
+                        let startRemoveEdit = function ()
+                        {
+                            try
+                            {
+                                // Get the SharePoint Ribbon object.
+                                let spRibbon = SP.Ribbon.PageManager.get_instance().get_ribbon();
+
+                                // If the ribbon is active.
+                                if (Boolean(spRibbon))
+                                {
+                                    // Check if the edit tab is present.
+                                    if (Boolean(spRibbon.getChildByTitle('Edit')))
+                                    {
+                                        // Remove the edit tab.
+                                        spRibbon.removeChild('Ribbon.ListForm.Edit');
+                                    }
+
+                                    // Select the read (browse) tab.
+                                    spRibbon.selectTabById('Ribbon.Read');
+
+                                    // Indicate that the title was set.
+                                    editRemoved = true;
+
+                                    resolve ();
+                                }
+                                // Ribbon is not found / ready.
+                                else
+                                {
+                                    if (!editRemoved && attempts > 0)
+                                    {
+                                        // Wait 0.2 seconds and try again.
+                                        setTimeout(startRemove, 200);
+
+                                        attempts--;
+                                    }
+                                    else
+                                    {
+                                        reject ( 'Unable to remove the edit tab (Ribbon took to long to load). Try refreshing this page.' );
+                                    }
+                                }
+                            }
+                            catch (errorMessage)
+                            {
+                                reject (errorMessage);
+                            }
+                        };
+
+                        startRemoveEdit();
+                    }, 'sp.ui.dialog.js');
+                });
+
+                return removeEditPromise;
+            }
+        }
+    }
+
+    /**
+     * A collection of SharePoint modal dialog utilities.
+     *
+     * UTILITIES [OBJECTS]
+     *      isActive - [FUNCTION] : Checks if a SharePoint modal dialog is active. Accepts success/fail callbacks.
+     *      resize   - [FUNCTION] : Resizes the modal dialog.
+     *      close    - [FUNCTION] : Closes the top most dialog.
+     *      setTitle - [FUNCTION] : Sets the title of the modal dialog window.
+     */
+    spModalDialog ()
+    {
+        return {
+            // Checks if there is a modal dialog window active.
+            isActive : function ()
+            {
+                let isActivePromise = new Promise ( ( resolve, reject ) =>
+                {
+                    ExecuteOrDelayUntilScriptLoaded( function ()
+                    {
+                        try
+                        {
+                            // Get the SharePoint Ribbon object.
+                            let modalDialog = SP.UI.ModalDialog.get_childDialog();
+
+                            // If the dialog is active.
+                            if (Boolean(modalDialog))
+                            {
+                                resolve (true);
+                            }
+                            // Dialog is not found / ready.
+                            else
+                            {
+                                resolve (false);
+                            }
+                        }
+                        catch (errorMessage)
+                        {
+                            reject (errorMessage);
+                        }
+
+                    }, 'sp.ui.dialog.js');
+                });
+
+                return isActivePromise;
+            },
+
+            // Automatically resize the modal window according to the content within it.
+            resize : function ()
+            {
+                let resizePromise = new Promise ( ( resolve, reject ) =>
+                {
+                    ExecuteOrDelayUntilScriptLoaded( function ()
+                    {
+                        let attempts       = 3;
+                        let resizeComplete = false;
+
+                        let startResize = function ()
+                        {
+                            try
+                            {
+                                // Get the SharePoint Ribbon object.
+                                let modalDialog = SP.UI.ModalDialog.get_childDialog();
+
+                                // If the dialog is active & if the content inside has loaded.
+                                if (Boolean(modalDialog) && modalDialog.$e_0 !== null)
+                                {
+                                    // Ensure the dialog is not maximized.
+                                    if (!modalDialog.$Q_0)
+                                    {
+                                        // Auto resize the dialog.
+                                        modalDialog.autoSize();
+                                    }
+
+                                    // Indicate that the title was set.
+                                    resizeComplete = true;
+
+                                    resolve ();
+                                }
+                                // Dialog is not found / ready.
+                                else
+                                {
+                                    // If the title hasn't been set and there are attempts left, try again.
+                                    if (!resizeComplete && attempts > 0)
+                                    {
+                                        // Wait 0.2 seconds and try again.
+                                        setTimeout(startResize, 200);
+
+                                        attempts--;
+                                    }
+                                    else
+                                    {
+                                        reject ( 'Unable to resize the modal dialog (Took to long to load). Try refreshing this window.' );
+                                    }
+                                }
+                            }
+                            catch (errorMessage)
+                            {
+                                reject (errorMessage);
+                            }
+                        };
+
+                        startResize();
+                    }, 'sp.ui.dialog.js')
+                });
+
+                return resizePromise;
+            },
+
+            // Closes the top most modal dialog.
+            close : function ()
+            {
+                ExecuteOrDelayUntilScriptLoaded( function ()
+                {
+                    let attempts    = 3;
+
+                    let startClose = function ()
+                    {
+                        try
+                        {
+                            // Get the SharePoint Ribbon object.
+                            let modalDialog = SP.UI.ModalDialog.get_childDialog();
+
+                            // If the dialog is active & if the content inside has loaded.
+                            if (Boolean(modalDialog))
+                            {
+                                // Closes the dialog.
+                                modalDialog.close();
+                            }
+                            // Dialog is not found / ready.
+                            else
+                            {
+                                if (attempts > 0)
+                                {
+                                    // Wait 0.2 seconds and try again.
+                                    setTimeout(startClose, 200);
+
+                                    attempts--;
+                                }
+                            }
+                        }
+                        catch (errorMessage)
+                        {
+                            console.log(errorMessage);
+                        }
+                    };
+
+                    startClose();
+                }, 'sp.ui.dialog.js')
+            },
+
+            // Closes the top most modal dialog.
+            setTitle : function (newTitle)
+            {
+                let setTitlePromise = new Promise ( ( resolve, reject ) =>
+                {
+                    ExecuteOrDelayUntilScriptLoaded( function ()
+                    {
+                        let attempts = 3;
+                        let titleSet = false;
+
+                        let startSetTitle = function ()
+                        {
+                            try
+                            {
+                                // Get the SharePoint Ribbon object.
+                                let modalDialog = SP.UI.ModalDialog.get_childDialog();
+
+                                // If the dialog is active & if the content inside has loaded.
+                                if (Boolean(modalDialog) && modalDialog.$e_0 !== null)
+                                {
+                                    // Closes the dialog.
+                                    SP.UI.UIUtility.setInnerText(parent.document.getElementById('dialogTitleSpan'), newTitle);
+
+                                    // Indicate that the title was set.
+                                    titleSet = true;
+
+                                    resolve ();
+                                }
+                                // Dialog is not found / ready.
+                                else
+                                {
+                                    // If the title hasn't been set and there are attempts left, try again.
+                                    if (!titleSet && attempts > 0)
+                                    {
+                                        // Wait 0.2 seconds and try again.
+                                        setTimeout(startSetTitle, 200);
+
+                                        attempts--;
+                                    }
+                                    else
+                                    {
+                                        reject ( 'Unable to set SharePoint Modal Title (Took to long to load). Try refreshing this window.' );
+                                    }
+                                }
+                            }
+                            catch (errorMessage)
+                            {
+                                reject (errorMessage);
+                            }
+                        };
+
+                        startSetTitle();
+                    }, 'sp.ui.dialog.js')
+                });
+
+                return setTitlePromise;
+            },
         }
     }
 }
