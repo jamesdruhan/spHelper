@@ -167,7 +167,7 @@ After you have initialized **spHelper.js** you can start to perform requests to 
 
 **Parameters**:
 
-- ***siteProperty [ARRAY]***: An array of SharePoint site properties as [STRING]. These are case sensitive and typically start with a capital letter such as Title or Url.
+- **siteProperty [ARRAY]**: An array of SharePoint site properties as [STRING]. These are case sensitive and typically start with a capital letter such as Title or Url.
 	- Get a full list of available properties here: https://msdn.microsoft.com/en-us/library/office/jj245288.aspx#properties
 
 - **onSuccess [FUNCTION]**: A JavaScript function that will be executed once the request is completed successfully.
@@ -220,7 +220,7 @@ This script will run as soon as the page loads and will read the site Title and 
 
 **Parameters**:
 
-- ***itemDetails [OBJECT]***: An object containing the specific details of the new item. This must be formatted in a specific manner. The structure of this object differs depending on the column field type. Review the code below for the stucture options.
+- **itemDetails [OBJECT]**: An object containing the specific details of the new item. This must be formatted in a specific manner. The structure of this object differs depending on the column field type. Review the code below for the stucture options.
 
 	- **listName**: The title of the list.
 
@@ -366,7 +366,7 @@ This script will run as soon as the page loads and it will add a new user to the
 
 **Parameters**:
 
-- ***itemDetails [OBJECT]***: An object containing the specific details of the item to update.
+- **itemDetails [OBJECT]**: An object containing the specific details of the item to update.
 
 	- **listName**: The title of the list.
 
@@ -495,7 +495,7 @@ However, if you still want to use CAML statements to read data you may do so.
 
 **Parameters**:
 
-- ***queryDetails [OBJECT]***: An object containing the specific details of the items you are looking to get from the SharePoint list.
+- **queryDetails [OBJECT]**: An object containing the specific details of the items you are looking to get from the SharePoint list.
 
 	- **listName**: The list title of the SharePoint list.
 
@@ -770,7 +770,7 @@ Get all items in a list where single column equals multiple values.
 
 **Parameters**:
 
-- ***deleteDetails [OBJECT]***: An object containing the specific details of the item to be deleted.
+- **deleteDetails [OBJECT]**: An object containing the specific details of the item to be deleted.
 	- **listName**: The title of the list.
 
 	- **itemID**: The SharePoint ID of the item you wish to delete.
@@ -867,7 +867,7 @@ This script will run as soon as the page loads and it will delete the user.
 **Parameters**:
 
 - **userID [STRING]**: The full qualified user ID ( DOMAIN / ID ).
--
+
 - **onSuccess [FUNCTION]**: A JavaScript function that will be executed once the request is completed successfully.
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
