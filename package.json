@@ -1,6 +1,6 @@
 {
   "name": "sphelper",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "A JavaScript library that makes JSOM requests to SharePoint simpler and less repetitive.",
   "scripts": {
     "babel": "babel src -d build --presets minify"
