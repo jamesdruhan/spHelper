@@ -2,7 +2,7 @@
 
 **spHelper.js** is a lightweight JavaScript class created to simplify communication to SharePoint services using JSOM (JavaScript Object Model). **spHelper.js** will shorten the amount of code you need to write, as well as reduce repetition. This class can manage same and cross domain requests.
 
-
+<br>
 ## Features
 
 - Cross Domain support
@@ -16,7 +16,7 @@
 - Get the current user profile
 - Get the current users manager profile
 
-
+<br>
 ## Getting Started
 
 
@@ -48,7 +48,7 @@ For example:
 - **Script Location**: http://add-in-7f4164e5346b2f.mysharepoint.site.com/myApplication/
 - **Library Location**: http://mysharepoint.site.com/training/Shared%20Documents/
 
-
+<br>
 ## spHelper Requirements
 In order to utilize the spHelper library (along with any other JSOM code you want to use) you must load a number of SharePoint specific scripts prior to loading your application which uses spHelper.
 
@@ -103,6 +103,7 @@ SP.SOD.executeFunc('sp.js', 'SP.ClientContext', initApp);
 <script type="text/javascript" src="/scripts/myApplication.js"></script>
 ```
 
+<br>
 ## Usage
 
 Review the "Getting Started" section to determine which method you need to use for initializing **spHelper.js**.
@@ -148,8 +149,8 @@ var dataConnection = new spHelper
 > **targetSite**: This should be set to the site URL of the SharePoint site you are performing requests on.
 
 You are now ready to perform requests with **spHelper.js**! Review the various available commands below to see what you can do with **spHelper.js**.
-<br>
 
+<br>
 ## spHelper Requests
 
 After you have initialized **spHelper.js** you can start to perform requests to your SharePoint site/library.
@@ -158,7 +159,7 @@ After you have initialized **spHelper.js** you can start to perform requests to 
 
 **CALLBACK**: A JavaScript callback is a function that is ran once a set of commands are completed. Callback functions are typically used when performing ASYNC calls. When you perform a ASYNC request to a server, along with your request itself, you also send a function that will be run after the request is completed.
 
-
+<br>
 ## Read a SharePoint Site Property
 
 **Function**: getSiteProperty( siteProperty, onSuccess, onFailure )
@@ -212,6 +213,7 @@ This script will run as soon as the page loads and will read the site Title and 
     SP.SOD.executeFunc("clienttemplates.js", "SPClientTemplates", myApplication);
 ```
 
+<br>
 ## Add a SharePoint List Item
 
 **Function**: addListItem( itemDetails, onSuccess, onFailure )
@@ -358,6 +360,7 @@ This script will run as soon as the page loads and it will add a new user to the
     SP.SOD.executeFunc("clienttemplates.js", "SPClientTemplates", myApplication);
 ```
 
+<br>
 ## Update a SharePoint List Item
 
 **Function**: updateListItem( itemDetails, onSuccess, onFailure )
@@ -424,7 +427,6 @@ var itemDetails =
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
 
-
 #### EXAMPLE
 
 This script will run as soon as the page loads and it will add a new user to the Customers list then print them in the console.
@@ -483,6 +485,7 @@ This script will run as soon as the page loads and it will add a new user to the
     SP.SOD.executeFunc("clienttemplates.js", "SPClientTemplates", myApplication);
 ```
 
+<br>
 ## Read SharePoint List Data
 
 Reading data from a SharePoint list using JSOM can be difficult as Microsoft uses CAML Query language to determine what data is received. spHelper.js uses a simplified approach and instead converts a simple JavaScript object into a CAML Query for you.
@@ -541,7 +544,6 @@ var queryDetails =
 - **onSuccess [FUNCTION]**: A JavaScript function that will be executed once the request is completed successfully.
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
-
 
 #### EXAMPLES
 
@@ -762,6 +764,7 @@ Get all items in a list where single column equals multiple values.
     SP.SOD.executeFunc("clienttemplates.js", "SPClientTemplates", myApplication);
 ```
 
+<br>
 ## Delete a SharePoint List Item
 
 **Function**: deleteListItem( itemDetails, onSuccess, onFailure )
@@ -786,7 +789,6 @@ var deleteDetails =
 - **onSuccess [FUNCTION]**: A JavaScript function that will be executed once the request is completed successfully.
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
-
 
 #### EXAMPLE
 
@@ -830,6 +832,7 @@ This script will run as soon as the page loads and it will delete the user.
     SP.SOD.executeFunc("clienttemplates.js", "SPClientTemplates", myApplication);
 ```
 
+<br>
 ## Get SharePoint List Settings
 
 **Function**: getListDetails( libraryName, onSuccess, onFailure )
@@ -844,6 +847,7 @@ This script will run as soon as the page loads and it will delete the user.
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
 
+<br>
 ## Search for SharePoint Users
 
 **Function**: searchUsers( searchTerm, onSuccess, onFailure )
@@ -858,6 +862,7 @@ This script will run as soon as the page loads and it will delete the user.
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
 
+<br>
 ## Get User Profile Object for a SharePoint User
 
 **Function**: getUserProfile( userID, onSuccess, onFailure )
@@ -872,6 +877,7 @@ This script will run as soon as the page loads and it will delete the user.
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
 
+<br>
 ## Get Specific Property of a SharePoint User
 
 **Function**: getUserProperty( userProperty, onSuccess, onFailure )
@@ -886,6 +892,7 @@ This script will run as soon as the page loads and it will delete the user.
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
 
+<br>
 ## Get SharePoint List Default Content Type Name
 
 **Function**: getListContentTypeDefault( libraryName, onSuccess, onFailure )
@@ -894,6 +901,7 @@ This script will run as soon as the page loads and it will delete the user.
 
 **Parameters**: TBD
 
+<br>
 ## Get the Current User's User Profile
 
 **Function**: getCurrentUser( onSuccess, onFailure )
@@ -906,6 +914,7 @@ This script will run as soon as the page loads and it will delete the user.
 
 - **onFailure [FUNCTION]**: A JavaScript function that will be executed if the request fails.
 
+<br>
 ## Get the Current Users's Manager User Profile
 
 **Function**: getCurrentUserManager( onSuccess, onFailure )
