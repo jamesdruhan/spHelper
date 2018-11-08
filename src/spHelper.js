@@ -99,6 +99,15 @@ export default class spHelper
         }
     }
 
+	/**
+	 * Refreshes the client context and spWeb objects.
+	 */
+	refreshConnection ()
+	{
+        this.setClientContext();
+        this.setWeb();
+	}
+
     /**
      * Retrieves one or more SPWeb properties of a SharePoint site. If the property is successfully received from the server
      * it will be passed back to the users 'onSuccess' callback function. Similarly, if an error occures, the error message
@@ -121,6 +130,9 @@ export default class spHelper
 
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Setup the request. Limits the returned data to only the requested properties.
             this.appContext.load(this.spWeb, siteProperty);
 
@@ -199,6 +211,9 @@ export default class spHelper
         {
             queryDetails.pagePosition = 0;
         }
+
+        // Refresh connections.
+        this.refreshConnection();
 
         // This array will be the final array returned to the users callback once all data is collected.
         let listData = [];
@@ -593,6 +608,9 @@ export default class spHelper
 
 		try
 		{
+            // Refresh connections.
+            this.refreshConnection();
+
 			// Will store the spList object when request is complete.
 			let spList = this.spWeb.get_lists().getByTitle(updateDetails.listName);
 
@@ -721,6 +739,9 @@ export default class spHelper
 
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Get the SharePoint list and create a blank list item.
             let spList         = this.spWeb.get_lists().getByTitle(itemDetails.listName);
             let itemCreateInfo = new SP.ListItemCreationInformation();
@@ -840,6 +861,9 @@ export default class spHelper
      */
     addListItemAttachment(fileDetails, onSuccessUser, onFailureUser)
     {
+        // Refresh connections.
+        this.refreshConnection();
+
         // Will store the spList object when request is complete.
         let spList = this.spWeb.get_lists().getByTitle(fileDetails.listName);
 
@@ -907,6 +931,9 @@ export default class spHelper
 
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Will store the spList object when request is complete.
             let spList = this.spWeb.get_lists().getByTitle(deleteDetails.listName);
 
@@ -935,6 +962,9 @@ export default class spHelper
 	{
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Will store the spList object when request is complete.
             let spList = this.spWeb.get_lists().getByTitle(libraryName);
 
@@ -989,6 +1019,9 @@ export default class spHelper
     {
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Create a local this for callbacks.
             let localThis = this;
 
@@ -1241,6 +1274,9 @@ export default class spHelper
 
 		try
 		{
+            // Refresh connections.
+            this.refreshConnection();
+
             // This variable will hold the SPUser class after the query is executed.
             let currentUser = this.spWeb.get_currentUser();
 
@@ -1299,6 +1335,9 @@ export default class spHelper
 	 */
     searchUsers (searchTerm, onSuccessUser, onFailureUser)
     {
+        // Refresh connections.
+        this.refreshConnection();
+
         // Create query object for searching people.
         // Options here: https://msdn.microsoft.com/en-us/library/microsoft.sharepoint.applicationpages.clientpickerquery.clientpeoplepickerqueryparameters_members.aspx
         let query = new SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters();
@@ -1384,6 +1423,9 @@ export default class spHelper
      */
     getUserProfile (userID, onSuccessUser, onFailureUser)
     {
+        // Refresh connections.
+        this.refreshConnection();
+
         // Create a SP.UserProfile.PeopleManager object.
         let peopleManager = new SP.UserProfiles.PeopleManager(this.appContext);
 
@@ -1427,6 +1469,9 @@ export default class spHelper
      */
     getCurrentUser (onSuccessUser, onFailureUser)
     {
+        // Refresh connections.
+        this.refreshConnection();
+
         // Create a SP.UserProfile.PeopleManager object.
         let peopleManager = new SP.UserProfiles.PeopleManager(this.appContext);
 
@@ -1470,6 +1515,9 @@ export default class spHelper
      */
     getCurrentUserManager (onSuccessUser, onFailureUser)
     {
+        // Refresh connections.
+        this.refreshConnection();
+
         let vueThis = this;
 
         let onSuccessCurrent = function (result)
@@ -1691,6 +1739,9 @@ export default class spHelper
 
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Will store the spList object when request is complete.
             let spList = this.spWeb.get_lists().getByTitle(libraryName);
 
@@ -1732,6 +1783,9 @@ export default class spHelper
 
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Will store the spList object when request is complete.
             let spList = this.spWeb.get_lists().getByTitle(libraryName);
 
@@ -1780,6 +1834,9 @@ export default class spHelper
 
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Will store the spList object when request is complete.
             let spList = this.spWeb.get_lists().getByTitle(libraryName);
 
@@ -1829,6 +1886,9 @@ export default class spHelper
 
         try
         {
+            // Refresh connections.
+            this.refreshConnection();
+
             // Will store the spList object when request is complete.
             let spList = this.spWeb.get_lists().getByTitle(libraryName);
 
