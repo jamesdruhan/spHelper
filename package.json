@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack --watch",
     "build-stand-alone": "webpack",
-    "build-npm": "babel src --out-file build/spHelper.js",
+    "build-npm": "babel src --out-file build/spHelper.js"
   },
   "homepage": "https://github.com/jamesdruhan/spHelper",
   "repository": {
