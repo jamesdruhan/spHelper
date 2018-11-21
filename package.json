@@ -1,12 +1,11 @@
 {
   "name": "sphelper",
-  "version": "0.2.8",
+  "version": "0.2.81",
   "description": "A JavaScript library that makes JSOM requests to SharePoint simpler and less repetitive.",
   "scripts": {
     "dev": "webpack --watch",
     "build-stand-alone": "webpack",
     "build-npm": "babel src --out-file build/spHelper.js",
-    "build-npm-min": "babel src --out-file build/spHelper.min.js --presets minify"
   },
   "homepage": "https://github.com/jamesdruhan/spHelper",
   "repository": {
@@ -25,7 +24,6 @@
   ],
   "files": [
     "build/spHelper.js",
-    "build/spHelper.min.js",
     "build/spHelper-stand-alone.min.js",
     "build/spHelper-stand-alone-poly.min.js"
   ],

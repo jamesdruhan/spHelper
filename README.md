@@ -9,8 +9,6 @@ Due to the various ways you can develop on the SharePoint platform there are mul
 
 -  **build/spHelper.js**
 	- Node module build (NPM).
-- **build/spHelper.min.js**
-	- Minified Node module build (NPM).
 - **build/spHelper-stand-alone-min.js**
 	- Independent JS library build (minified).
 - **build/spHelper-stand-alone-poly.min.js**
