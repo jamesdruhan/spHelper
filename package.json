@@ -3,28 +3,42 @@
   "version": "0.2.7",
   "description": "A JavaScript library that makes JSOM requests to SharePoint simpler and less repetitive.",
   "scripts": {
-    "babel": "babel src -d build --presets minify"
+    "dev": "webpack --watch",
+    "build-stand-alone": "webpack",
+    "build-npm": "babel src --out-file build/spHelper.js",
+    "build-npm-min": "babel src --out-file build/spHelper.min.js --presets minify"
   },
-  "main": "build/spHelper.js",
-  "author": "James Druhan <jdruhan.home@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-minify": "^0.4.3"
-  },
-  "keywords": [
-    "sharepoint",
-    "jsom",
-    "javascript"
-  ],
-  "files": [
-    "build/spHelper.js"
-  ],
   "homepage": "https://github.com/jamesdruhan/spHelper",
   "repository": {
     "type": "git",
     "url": "https://github.com/jamesdruhan/spHelper.git"
+  },
+  "main": "build/spHelper.min.js",
+  "author": "James Druhan <jdruhan.home@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "keywords": [
+    "sharepoint",
+    "jsom",
+    "javascript",
+    "microsoft"
+  ],
+  "files": [
+    "build/spHelper.js",
+    "build/spHelper.min.js",
+    "build/spHelper-stand-alone.min.js",
+    "build/spHelper-stand-alone-poly.min.js"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-minify-webpack-plugin": "^0.3.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.14"
   }
 }
