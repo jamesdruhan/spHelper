@@ -1,6 +1,6 @@
 {
   "name": "sphelper",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "A JavaScript library that makes JSOM requests to SharePoint simpler and less repetitive.",
   "scripts": {
     "dev": "webpack --watch",
