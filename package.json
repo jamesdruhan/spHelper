@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/jamesdruhan/spHelper.git"
   },
-  "main": "build/spHelper.min.js",
+  "main": "build/spHelper.js",
   "author": "James Druhan <jdruhan.home@gmail.com>",
   "license": "MIT",
   "private": false,
