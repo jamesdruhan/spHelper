@@ -1,6 +1,6 @@
 const webpack      = require( 'webpack' );
 const path         = require( 'path' );
-const MinifyPlugin = require( 'babel-minify-webpack-plugin' );
+// const MinifyPlugin = require( 'babel-minify-webpack-plugin' );
 
 module.exports = {
 	entry : 
@@ -11,21 +11,22 @@ module.exports = {
 
 	output :
 	{
-		path          : path.resolve(__dirname, 'build/'),
+		// path          : path.resolve(__dirname, 'build/'),
+		path          : '//add-in-763d2b1f74bbdf.spappsdev2.canon.ca/site/DeviceAgreement/App/test/',
 		filename      : '[name]',
 		library       : "spHelper",
 		libraryExport : "default",
 	},
 
-	plugins :
-	[
-    	new MinifyPlugin (),
+	// plugins :
+	// [
+    // 	new MinifyPlugin (),
 
-		new webpack.DefinePlugin
-		({
-			'process.env.NODE_ENV' : JSON.stringify( 'production' )
- 		}),
-	],
+	// 	new webpack.DefinePlugin
+	// 	({
+	// 		'process.env.NODE_ENV' : JSON.stringify( 'production' )
+ 	// 	}),
+	// ],
 
 	module :
 	{
@@ -45,5 +46,5 @@ module.exports = {
 		colors : true
 	},
 
-	mode : 'production',
+	mode : 'development',
 };

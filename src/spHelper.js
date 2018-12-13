@@ -150,11 +150,6 @@ export default class spHelper
                     results.Title = classThis.spWeb.get_title();
                 }
 
-                if (siteProperty.includes('Url'))
-                {
-                    results.Url = classThis.spWeb.get_url();
-                }
-
                 if (siteProperty.includes('ServerRelativeUrl'))
                 {
                     results.ServerRelativeUrl = classThis.spWeb.get_serverRelativeUrl();
@@ -518,6 +513,7 @@ export default class spHelper
                         try
                         {
                             itemRow[columnName] = currentListItem.get_item(columnName);
+                            
                         }
                         catch (error)
                         {
@@ -2207,4 +2203,3 @@ export default class spHelper
         }
     }
 }
-
