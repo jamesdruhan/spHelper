@@ -157,10 +157,6 @@ var spHelper = function () {
                         results.Title = classThis.spWeb.get_title();
                     }
 
-                    if (siteProperty.includes('Url')) {
-                        results.Url = classThis.spWeb.get_url();
-                    }
-
                     if (siteProperty.includes('ServerRelativeUrl')) {
                         results.ServerRelativeUrl = classThis.spWeb.get_serverRelativeUrl();
                     }
@@ -936,21 +932,20 @@ var spHelper = function () {
     }, {
         key: 'getListDetails',
         value: function getListDetails(libraryName, onSuccessUser, onFailureUser) {
+            var _this = this;
+
             var readOnlyFields = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 
             try {
                 // Refresh connections.
                 this.refreshConnection();
 
-                // Create a local this for callbacks.
-                var localThis = this;
-
                 var getLibraryDetails = function getLibraryDetails(contentTypeID) {
                     // This will hold all the list details.
                     var listDetails = {};
 
                     // Will store the spList object when request is complete.
-                    var spList = localThis.spWeb.get_lists().getByTitle(libraryName);
+                    var spList = _this.spWeb.get_lists().getByTitle(libraryName);
 
                     // Will store the spContentTypeCollection object when request is complete.
                     var spContentTypeCollection = spList.get_contentTypes();
@@ -964,11 +959,14 @@ var spHelper = function () {
                     // Get the root folder of the list. This is used to generate the list URL.
                     var spFolder = spList.get_rootFolder();
 
+                    // Create a local spWeb object -- This resolves scoping issues.
+                    var spWeb = _this.spWeb;
+
                     // Load the request into the client context.
-                    localThis.appContext.load(spFields);
-                    localThis.appContext.load(spList);
-                    localThis.appContext.load(spFolder);
-                    localThis.appContext.load(localThis.spWeb);
+                    _this.appContext.load(spFields);
+                    _this.appContext.load(spList);
+                    _this.appContext.load(spFolder);
+                    _this.appContext.load(spWeb);
 
                     // Callback function when the request (promise) is resolved.
                     var resolve = function resolve() {
@@ -992,9 +990,9 @@ var spHelper = function () {
 
                         // Set the library relative server URL. This depends on the type of library (list/document).
                         if (listDetails.settings.template == 100) {
-                            listDetails['settings']['serverRelativeURL'] = localThis.spWeb.get_url() + '/Lists/' + listDetails.settings.internalName + '/';
+                            listDetails['settings']['serverRelativeURL'] = spWeb.get_url() + '/Lists/' + listDetails.settings.internalName + '/';
                         } else {
-                            listDetails['settings']['serverRelativeURL'] = localThis.spWeb.get_url() + '/' + listDetails.settings.internalName + '/';
+                            listDetails['settings']['serverRelativeURL'] = spWeb.get_url() + '/' + listDetails.settings.internalName + '/';
                         }
 
                         // Get all the library columns and details.
@@ -1129,7 +1127,7 @@ var spHelper = function () {
                         _onFailure(args.get_message());
                     };
 
-                    localThis.appContext.executeQueryAsync(resolve, reject);
+                    _this.appContext.executeQueryAsync(resolve, reject);
                 };
 
                 var _onFailure = function _onFailure(errorMessage) {

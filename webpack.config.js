@@ -11,8 +11,7 @@ module.exports = {
 
 	output :
 	{
-		// path          : path.resolve(__dirname, 'build/'),
-		path          : '//add-in-763d2b1f74bbdf.spappsdev2.canon.ca/site/DeviceAgreement/App/test/',
+		path          : path.resolve(__dirname, 'build/'),
 		filename      : '[name]',
 		library       : "spHelper",
 		libraryExport : "default",

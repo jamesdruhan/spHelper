@@ -1018,16 +1018,13 @@ export default class spHelper
             // Refresh connections.
             this.refreshConnection();
 
-            // Create a local this for callbacks.
-            let localThis = this;
-
-            let getLibraryDetails = function (contentTypeID)
+            let getLibraryDetails = (contentTypeID) =>
             {
                 // This will hold all the list details.
                 let listDetails = {};
 
                 // Will store the spList object when request is complete.
-                let spList = localThis.spWeb.get_lists().getByTitle(libraryName);
+                let spList = this.spWeb.get_lists().getByTitle(libraryName);
 
                 // Will store the spContentTypeCollection object when request is complete.
                 let spContentTypeCollection = spList.get_contentTypes();
@@ -1041,14 +1038,17 @@ export default class spHelper
                 // Get the root folder of the list. This is used to generate the list URL.
                 let spFolder = spList.get_rootFolder();
 
+                // Create a local spWeb object -- This resolves scoping issues.
+                let spWeb = this.spWeb;
+
                 // Load the request into the client context.
-                localThis.appContext.load(spFields);
-                localThis.appContext.load(spList);
-                localThis.appContext.load(spFolder);
-                localThis.appContext.load(localThis.spWeb);
+                this.appContext.load(spFields);
+                this.appContext.load(spList);
+                this.appContext.load(spFolder);
+                this.appContext.load(spWeb);
 
                 // Callback function when the request (promise) is resolved.
-                let resolve = function ()
+                let resolve = () =>
                 {
                     listDetails['settings'] = {};
 
@@ -1071,11 +1071,11 @@ export default class spHelper
                     // Set the library relative server URL. This depends on the type of library (list/document).
                     if (listDetails.settings.template == 100)
                     {
-                        listDetails['settings']['serverRelativeURL'] = localThis.spWeb.get_url() + '/Lists/' + listDetails.settings.internalName + '/';
+                        listDetails['settings']['serverRelativeURL'] = spWeb.get_url() + '/Lists/' + listDetails.settings.internalName + '/';
                     }
                     else
                     {
-                        listDetails['settings']['serverRelativeURL'] = localThis.spWeb.get_url() + '/' + listDetails.settings.internalName + '/';
+                        listDetails['settings']['serverRelativeURL'] = spWeb.get_url() + '/' + listDetails.settings.internalName + '/';
                     }
 
                     // Get all the library columns and details.
@@ -1228,15 +1228,15 @@ export default class spHelper
                 };
 
                 // Callback function when the request (promise) has rejected.
-                let reject = function (sender, args)
+                let reject = (sender, args) =>
                 {
                     onFailure( args.get_message() );
                 };
 
-                localThis.appContext.executeQueryAsync( resolve, reject );
+                this.appContext.executeQueryAsync( resolve, reject );
             };
 
-            let onFailure = function ( errorMessage )
+            let onFailure = ( errorMessage ) =>
             {
                 onFailureUser( errorMessage );
             }
